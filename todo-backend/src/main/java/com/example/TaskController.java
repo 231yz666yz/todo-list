@@ -40,18 +40,19 @@ public class TaskController {
         return taskRepository.save(task);
     }
 
+
     @PutMapping("/{id}")
-    public Task updateTask(@PathVariable Long id, Task taskDetails){
+    public Task updateTask(@PathVariable Long id, @RequestBody Task taskDetails){
         Task task = taskRepository.findById(id).orElseThrow();
         task.setTitle(taskDetails.getTitle());
         task.setCompleted(taskDetails.isCompleted());
         return taskRepository.save(task);
     }
 
-    @PutMapping("/{id}")
-    public Task toggleTask(@PathVariable Long id, Boolean completed){
+    @PostMapping("/toggle/{id}")
+    public Task toggleTask(@PathVariable Long id, @RequestBody Task taskDetails){
          Task task = taskRepository.findById(id).orElseThrow();
-         task.setCompleted(completed);
+         task.setCompleted(taskDetails.isCompleted());
          return taskRepository.save(task);
     }
 

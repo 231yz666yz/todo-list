@@ -15,7 +15,7 @@ export default{
     },
 
     toggleTask(id, complete){
-        return request.put(`/tasks/${id}`, complete);
+        return request.post(`/tasks/toggle/${id}`, complete);
     },
 
     deleteTask(id){
