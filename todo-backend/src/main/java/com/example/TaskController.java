@@ -48,6 +48,13 @@ public class TaskController {
         return taskRepository.save(task);
     }
 
+    @PutMapping("/{id}")
+    public Task toggleTask(@PathVariable Long id, Boolean completed){
+         Task task = taskRepository.findById(id).orElseThrow();
+         task.setCompleted(completed);
+         return taskRepository.save(task);
+    }
+
     @DeleteMapping("/{id}")
     public void deleteTask(@PathVariable Long id){
         if (!taskRepository.existsById(id)) {

@@ -14,6 +14,10 @@ export default{
         return request.put(`/tasks/${id}`, task);
     },
 
+    toggleTask(id, complete){
+        return request.put(`/tasks/${id}`, complete);
+    },
+
     deleteTask(id){
         return request.delete(`/tasks/${id}`);
     }

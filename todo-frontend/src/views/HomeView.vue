@@ -8,9 +8,11 @@
 
         <ul class="task-container">
             <li v-for="item in taskList" :key="item.id">
-                <span :class="{done: item.completed}" @click="toggleComplete(item)">
+                <span :class="{completed: item.completed}">
                     {{item.title}}
                 </span>
+            <input type="checkbox" :checked="item.completed" @change="item.completed">
+            <span>{{ item.completed}}</span>
                 <button @click="del(item.id)">删除</button>
             </li>
         </ul>
@@ -20,14 +22,14 @@
 <script setup>
     import { ref, onMounted } from 'vue'
     import taskApi from '../api/task'
-    const { getAllTasks, addTask, updateTask, deleteTask } = taskApi
+    const { getAllTasks, addTask, updateTask, toggleTask, deleteTask } = taskApi
 
     const taskList = ref([])
     const newTask = ref("")
 
     onMounted(async () => {
     const res = await getAllTasks()
-    taskList.value = res
+    taskList.value = res.data
     })
 
     const add = async () => {
@@ -41,26 +43,25 @@
         await addTask(task)
         
         const res = await getAllTasks()
-        taskList.value = res
+        taskList.value = res.data
 
         newTask.value = ""
     }
     
     const toggleComplete = async(item) => {
-        await updateTask(item.id, {
-            title: item.title,
+        await toggleTask(item.id, {
             completed: item.completed
         })  
         
         const res = await getAllTasks()
-        taskList.value = res
+        taskList.value = res.data
     }
 
     const del = async(id) => {
         await deleteTask(id)
 
         const res = await getAllTasks()
-        taskList.value = res
+        taskList.value = res.data
     }
 </script>
 
@@ -130,7 +131,7 @@ li span {
   cursor: pointer;
 }
 
-.done {
+.completed {
   text-decoration: line-through;
   color: #999;
 }
